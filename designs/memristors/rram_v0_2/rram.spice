@@ -1,0 +1,16 @@
+*MADE BY JORGE ALEJANDRO JUAREZ LORA IPN
+
+.subckt rram TE BE
+*N1 TE BE rram_model gap_initial=unif(0.9,0.8)
+*N1 TE BE rram_model gap_initial=1.69
+N1 TE BE rram_model
+.ends rram
+
+.model rram_model rram_va
+
+
+.control
+*pre_osdi /home/alex/pdk/sky130B/libs.tech/ngspice/rram.osdi
+pre_osdi $PDK_ROOT/sky130A/libs.tech/ngspice/rram.osdi
+*pre_osdi /foss/designs/spike_130/designs/memristors/rram_v0/rram.osdi
+.endc

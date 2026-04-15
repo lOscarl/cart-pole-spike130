@@ -1,0 +1,29 @@
+** sch_path: /foss/designs/spike_130/designs/tb_memristor/tb_rramx.sch
+**.subckt tb_rramx
+V1 net1 GND PWL(0 -0.85 500u 0.85 1m -0.85)
+.save i(v1)
+X1 net1 GND rram_cell gap_i=1.6
+**** begin user architecture code
+
+.option savecurrents
+.tran 1n 1m
+.control
+	save all
+	run
+	write tb_rramx.raw
+.endc
+
+
+.subckt rram_cell BE TE gap_i=0.1
+N1 BE TE rram_model
+.model rram_model rram gap_initial={gap_i}
+.ends rram_cell
+
+.control
+pre_osdi /foss/designs/spike_130/designs/prubs/rram.osdi
+.endc
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end

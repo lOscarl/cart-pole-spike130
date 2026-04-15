@@ -1,0 +1,35 @@
+** sch_path: /foss/designs/spike_130/designs/tb_memristor/tb_rram_v1.sch
+**.subckt tb_rram_v1
+V3 bl2 GND pulse(1 1.8 0 1n 1n 0.5u 1u 50)
+V6 sl2 GND pulse(1 1.8 50u 1n 1n 0.5u 1u)
+Vmeas1 a2 sl2 0
+.save i(vmeas1)
+X1 a2 bl2 rram_cell
+**** begin user architecture code
+.lib /foss/pdks/sky130A/libs.tech/combined/sky130.lib.spice tt
+
+
+*.option savecurrents
+.control
+ tran 1n 100u uic
+ wrdata gap_change.txt n.x1.n1#ngap
+ write tb_rramx.raw
+.endc
+.save all
+
+
+.subckt rram_cell BE TE
+N1 BE TE rram_model
+.ends rram_cell
+
+.model rram_model rram gap_initial=0.5
+*0.1-1.7
+
+.control
+pre_osdi /foss/designs/spike_130/designs/prubs/rram.osdi
+.endc
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end

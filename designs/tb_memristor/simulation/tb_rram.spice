@@ -1,0 +1,23 @@
+** sch_path: /foss/designs/spike_130/designs/tb_memristor/tb_rram.sch
+**.subckt tb_rram
+XMEM1 net1 GND rram
+V1 net1 GND PWL(0 -0.85 500u 0.85 1m -0.85)
+.save i(v1)
+**** begin user architecture code
+
+.option savecurrents
+.tran 1n 1m
+.control
+	save all
+	run
+	write tb_rram.raw
+.endc
+
+ ** opencircuitdesign pdks install
+*.inc /foss/designs/spike_130/designs/memristors/rram_v0/rram.spice
+.inc /foss/pdks/sky130A/libs.tech/ngspice/rram.spice
+*.inc /foss/pdks/sky130A/libs.tech/combined/rram.spice
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end

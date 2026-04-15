@@ -1,0 +1,36 @@
+v {xschem version=3.4.7 file_version=1.2}
+G {}
+K {type=reram_va
+format="@name @pinlist @model gap_i=@gap_i"
+
+template="name=X1
+model=rram_cell
+spiceprefix=X
+gap_i=0.1
+"
+}
+V {}
+S {}
+E {}
+L 4 -40 -0 -30 0 {}
+L 4 -30 -0 -30 10 {}
+L 4 -30 10 -20 10 {}
+L 4 -20 -10 -20 10 {}
+L 4 -20 -10 -10 -10 {}
+L 4 -10 -10 -10 10 {}
+L 4 -10 10 -0 10 {}
+L 4 -0 -10 0 10 {}
+L 4 0 -10 10 -10 {}
+L 4 10 -10 10 -0 {}
+L 4 10 -0 20 0 {}
+L 7 30 0 50 0 {}
+L 7 -60 0 -40 0 {}
+B 4 20 -20 30 20 {}
+B 5 47.5 -2.5 52.5 2.5 {name=TE dir=inout}
+B 5 -62.5 -2.5 -57.5 2.5 {name=BE dir=inout}
+P 4 5 30 -20 -40 -20 -40 20 30 20 30 -20 {}
+T {@symname} -44 -36 0 0 0.3 0.3 {}
+T {TE} 45 -14 0 1 0.2 0.2 {}
+T {BE} -55 -14 0 0 0.2 0.2 {}
+T {gap_i=@gap_i} -24 24 0 0 0.2 0.2 {}
+T {@name} -5 -22 0 0 0.2 0.2 {}

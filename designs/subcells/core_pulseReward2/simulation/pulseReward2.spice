@@ -1,0 +1,183 @@
+** sch_path: /foss/designs/spike_130/designs/subcells/core_pulseReward2/pulseReward2.sch
+**.subckt pulseReward2 reward vss vdd vref vin vspike phi_fire
+*.opin vspike
+*.iopin vdd
+*.opin phi_fire
+*.ipin vin
+*.ipin vref
+*.iopin vss
+*.ipin reward
+x19 vdd phi1 vin net2 net1 monostable
+x21 vdd phi1 phi2 phi_int nor
+x22 vdd phi_int phi_fire not
+V6 vspike_down GND 0
+V7 vspike_up GND 1.4
+XC2 net1 net2 sky130_fd_pr__cap_mim_m3_2 W=4 L=4 MF=1 m=1
+XC4 GND vrefrac sky130_fd_pr__cap_mim_m3_2 W=4 L=4 MF=1 m=1
+XM7 vrefrac net5 net3 GND sky130_fd_pr__nfet_01v8 L=5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+x1 vspike_up_plus vdd reward net4 vspike_up conmutator
+V8 vspike_up_plus GND 1.8
+x2 phi1 vspike net4 vdd switch
+x3 vdd vref phi2b vrefrac GND ota_1_stage
+x4 phi2 vspike vrefrac vdd switch
+x5 phi_int vspike vref vdd switch
+x6 phi1 vrefrac vspike_down vdd switch
+x7 phi2 net3 vdd vdd switch
+x9 vdd phi1 phi2b phi2 xnor
+XM5 net2 vr GND GND sky130_fd_pr__nfet_01v8 L=5 W=0.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+V1 vr GND 0.8
+V2 net5 GND 1.7
+**.ends
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_monostable/monostable.sym # of pins=5
+** sym_path: /foss/designs/spike_130/designs/subcells/core_monostable/monostable.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_monostable/monostable.sch
+.subckt monostable vdd out trigger in2 in1
+*.iopin vdd
+*.ipin trigger
+*.ipin in1
+*.ipin in2
+*.opin out
+x1 vdd in2 net1 not
+x2 vdd net1 out not
+x3 vdd in1 net1 trigger nand
+.ends
+
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_nor/nor.sym # of pins=4
+** sym_path: /foss/designs/spike_130/designs/subcells/core_nor/nor.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_nor/nor.sch
+.subckt nor vdd A B out
+*.ipin A
+*.ipin B
+*.iopin vdd
+*.opin out
+XM3 out A GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM4 out B GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM11 net1 A vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM1 out B net1 vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_not/not.sym # of pins=3
+** sym_path: /foss/designs/spike_130/designs/subcells/core_not/not.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_not/not.sch
+.subckt not vdd in out
+*.ipin in
+*.opin out
+*.iopin vdd
+XM10 out in vdd vdd sky130_fd_pr__pfet_01v8_lvt L=0.35 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM1 out in GND GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_conmutator/conmutator.sym # of pins=5
+** sym_path: /foss/designs/spike_130/designs/subcells/core_conmutator/conmutator.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_conmutator/conmutator.sch
+.subckt conmutator in2 vdd cntrl out in1
+*.ipin cntrl
+*.ipin in2
+*.ipin in1
+*.iopin vdd
+*.opin out
+x1 vdd cntrl net1 not
+XM5 out cntrl in2 GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM10 out net1 in2 vdd sky130_fd_pr__pfet_01v8_lvt L=0.35 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM6 out net1 in1 GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM7 out cntrl in1 vdd sky130_fd_pr__pfet_01v8_lvt L=0.35 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_switch/switch.sym # of pins=4
+** sym_path: /foss/designs/spike_130/designs/subcells/core_switch/switch.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_switch/switch.sch
+.subckt switch cntrl in out vdd
+*.ipin cntrl
+*.ipin in
+*.iopin vdd
+*.opin out
+XM3 out cntrl in GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM4 out net1 in vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+x1 vdd cntrl net1 not
+.ends
+
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_ota_1stage/ota_1_stage.sym # of pins=5
+** sym_path: /foss/designs/spike_130/designs/subcells/core_ota_1stage/ota_1_stage.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_ota_1stage/ota_1_stage.sch
+.subckt ota_1_stage vdd vn vout vp vss
+*.iopin vdd
+*.ipin vp
+*.opin vout
+*.ipin vn
+*.iopin vss
+XM1 net1 vp net3 GND sky130_fd_pr__nfet_01v8 L=0.15 W=4.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM3 net1 net1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM4 vout net1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM2 vout vn net3 GND sky130_fd_pr__nfet_01v8 L=0.15 W=4.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM5 net3 net2 vss GND sky130_fd_pr__nfet_01v8 L=0.45 W=5.4 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM6 net2 net2 vss GND sky130_fd_pr__nfet_01v8 L=0.45 W=5.4 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM9 net2 net2 vdd vdd sky130_fd_pr__pfet_01v8 L=0.150 W=0.55 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_xnor/xnor.sym # of pins=4
+** sym_path: /foss/designs/spike_130/designs/subcells/core_xnor/xnor.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_xnor/xnor.sch
+.subckt xnor vdd A B vout
+*.ipin A
+*.ipin B
+*.iopin vdd
+*.opin vout
+XM5 net1 A vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM6 vout B net1 vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM8 vout B A GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM9 vout A B GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_nand/nand.sym # of pins=4
+** sym_path: /foss/designs/spike_130/designs/subcells/core_nand/nand.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_nand/nand.sch
+.subckt nand vdd out A B
+*.iopin vdd
+*.opin out
+*.ipin A
+*.ipin B
+XM4 net1 B GND GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM1 out B vdd vdd sky130_fd_pr__pfet_01v8_lvt L=0.35 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM2 out A vdd vdd sky130_fd_pr__pfet_01v8_lvt L=0.35 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM3 out A net1 GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+.GLOBAL GND
+.end

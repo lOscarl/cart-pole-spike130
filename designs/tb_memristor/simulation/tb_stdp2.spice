@@ -1,0 +1,108 @@
+** sch_path: /foss/designs/spike_130/designs/tb_memristor/tb_stdp2.sch
+**.subckt tb_stdp2
+V1 s1 GND PWL(0 1 20n 1 20.1n 1.1 30n 1.1 30.1n 1 100n 1 100.1n 1.5 400n 1.5 400.1n 0.5 700n 0.5 700.1n 1 1010n 1 1010.1n 1.1
++ 1020n 1.1 1020.1n 1)
+Vmeas net1 s2 0
+.save i(vmeas)
+X1 net1 s1 rram_cell gap_i=0.8
+Vmeas1 net2 s2b 0
+.save i(vmeas1)
+X2 net2 s1b rram_cell gap_i=0.8
+V5 s1d GND PWL(0 1 100n 1 100.1n 1.1 200n 1.1 200.1n 1 500n 1 r=0)
+Vmeas2 net3 s2d 0
+.save i(vmeas2)
+X3 net3 s1d rram_cell gap_i=0.8
+V6 s2d GND 1
+V3 s2b GND PWL(0 1 20n 1 20.1n 1.1 30n 1.1 30.1n 1 100n 1 100.1n 1.5 400n 1.5 400.1n 0.5 700n 0.5 700.1n 1 1010n 1 1010.1n 1.1
++ 1020n 1.1 1020.1n 1)
+**** begin user architecture code
+
+.subckt rram_cell BE TE gap_i=1.1
+N1 BE TE rram_model
+.model rram_model rram
++gap_initial={gap_i}
+.ends rram_cell
+
+.control
+pre_osdi /foss/designs/spike_130/designs/memristors/rram_v1/rram.osdi
+.endc
+
+
+
+*------------------ PARAMETROS BASE ------------------
+.param t1=110n
+.param t2=110.1n
+.param t3=410n
+.param t4=410.1n
+.param t5=710n
+.param t6=710.1n
+
+*------------------ FUENTE PWL ------------------
+V2 s2 0 PWL( 0 1
++ {t1} 1
++ {t2} 1.5
++ {t3} 1.5
++ {t4} 0.5
++ {t5} 0.5
++ {t6} 1)
+
+V4 s1b 0 PWL( 0 1
++ {t1} 1
++ {t2} 1.5
++ {t3} 1.5
++ {t4} 0.5
++ {t5} 0.5
++ {t6} 1)
+
+.tran 1n 1.1u
+
+.control
+  set wr_singlescale
+  set wr_vecnames
+
+  * variables internas del control
+  let v1 = 110n
+  let v2 = 110.1n
+  let v3 = 410n
+  let v4 = 410.1n
+  let v5 = 700n
+  let v6 = 700.1n
+
+  let delta = 10n
+
+  repeat 29
+
+    alterparam t1 = $&v1
+    alterparam t2 = $&v2
+    alterparam t3 = $&v3
+    alterparam t4 = $&v4
+    alterparam t5 = $&v5
+    alterparam t6 = $&v6
+
+    reset
+    run
+
+    *remzerovec
+    wrdata tb_stdp2.txt v(s1) v(s2) i(vmeas)
+		+v(s1b) v(s2b) i(vmeas1)
+    write tb_stdp2.raw
+    set appendwrite
+
+    * incrementar 10ns
+    let v1 = v1 + delta
+    let v2 = v2 + delta
+    let v3 = v3 + delta
+    let v4 = v4 + delta
+    let v5 = v5 + delta
+    let v6 = v6 + delta
+
+  end
+
+.endc
+.save all
+.end
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end

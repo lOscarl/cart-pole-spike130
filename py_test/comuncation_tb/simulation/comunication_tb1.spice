@@ -1,0 +1,47 @@
+** sch_path: /foss/designs/spike_130/py_test/comuncation_tb/comunication_tb1.sch
+**.subckt comunication_tb1
+x1 net1 vn vo vp GND ota_1_stage
+V1 vn GND PWL(0 0 200n 1.8 400n 0 600n 1.8 800n 0 1u 1.8)
+V2 vp GND 1
+V3 net1 GND 1.8
+R1 vo GND 10G m=1
+**** begin user architecture code
+
+
+.control
+ tran .5n 1u uic
+ write comunication_tb1.raw
+.endc
+.save all
+
+
+.lib /foss/pdks/sky130A/libs.tech/combined/sky130.lib.spice tt
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  /foss/designs/spike_130/designs/subcells/core_ota_1stage/ota_1_stage.sym # of pins=5
+** sym_path: /foss/designs/spike_130/designs/subcells/core_ota_1stage/ota_1_stage.sym
+** sch_path: /foss/designs/spike_130/designs/subcells/core_ota_1stage/ota_1_stage.sch
+.subckt ota_1_stage vdd vn vout vp vss
+*.iopin vdd
+*.ipin vp
+*.opin vout
+*.ipin vn
+*.iopin vss
+XM1 net1 vp net3 GND sky130_fd_pr__nfet_01v8 L=0.15 W=4.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM3 net1 net1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM4 vout net1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=3 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM2 vout vn net3 GND sky130_fd_pr__nfet_01v8 L=0.15 W=4.5 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM5 net3 net2 vss GND sky130_fd_pr__nfet_01v8 L=0.45 W=5.4 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM6 net2 net2 vss GND sky130_fd_pr__nfet_01v8 L=0.45 W=5.4 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+I4 vdd net2 11u
+.ends
+
+.GLOBAL GND
+.end

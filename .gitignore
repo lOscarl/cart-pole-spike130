@@ -2,4 +2,5 @@ designs/tb_xin_neuron_v1/simulation/tb_neuron_xin_v1.raw
 designs/tb_memristor/simulation/prueba_potenciacion.txt
 tests/simulation/synapsis_t4.raw
 designs/tb_memristor/simulation/prueba_rewNeuron_potenciacion.raw
+tests/simulation/cp_net3.raw
 

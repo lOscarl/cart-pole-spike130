@@ -603,7 +603,7 @@ C {devices/lab_wire.sym} -310 -260 0 0 {name=p51 sig_type=std_logic lab=vtrh2}
 C {devices/lab_wire.sym} -230 -190 2 1 {name=p52 sig_type=std_logic lab=vss}
 C {/foss/designs/spike_130/designs/core_xin_neuron_v2/neuron_xin_v2.sym} -230 -240 0 0 {name=x11}
 C {devices/lab_wire.sym} -310 -200 2 1 {name=p54 sig_type=std_logic lab=vss}
-C {devices/isource.sym} -410 -210 2 0 {name=I4 value=100n}
+C {devices/isource.sym} -410 -210 2 0 {name=I4 value=100e-9}
 C {devices/gnd.sym} -410 -180 0 0 {name=l16 lab=GND}
 C {devices/lab_wire.sym} -140 -240 0 1 {name=p50 sig_type=std_logic lab=viy}
 C {devices/lab_wire.sym} -310 -10 0 0 {name=p45 sig_type=std_logic lab=vref}

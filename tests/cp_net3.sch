@@ -348,6 +348,7 @@ logx=0
 logy=0
 color=8
 node=n.x21.n1#ngap}
+P 4 1 -630 -770 {}
 N -50 -1550 0 -1550 {
 lab=vdd}
 N 70 -1450 120 -1450 {
@@ -396,9 +397,9 @@ N 1930 -1680 1940 -1680 {lab=vin_1}
 N 1940 -1680 1980 -1770 {lab=vin_1}
 C {devices/code_shown.sym} -380 -2020 0 0 {name=s2 only_toplevel=false value="
 Ix 0 v_x 1.8u
-Ixd 0 v_xd 1.3u
-It 0 v_t 1u
-Itd 0 v_td 1.5u
+Idx 0 v_dx 1.3u
+Ith 0 v_th 1u
+Idth 0 v_dth 1.5u
 Vr1 v_rew1 0 1.8
 Vr2 v_rew2 0 1.8
 .control
@@ -468,9 +469,9 @@ C {devices/lab_wire.sym} 2120 -1530 2 1 {name=p35 sig_type=std_logic lab=vss}
 C {devices/lab_wire.sym} 2080 -1540 0 0 {name=p36 sig_type=std_logic lab=v_rew2}
 C {/foss/designs/spike_130/designs/core_xin_neuron_v1/neuron_xin_v1.sym} 2140 -1580 0 0 {name=x6}
 C {devices/lab_wire.sym} 370 -1350 0 0 {name=p1 sig_type=std_logic lab=v_x}
-C {devices/lab_wire.sym} 750 -1350 0 0 {name=p7 sig_type=std_logic lab=v_xd}
-C {devices/lab_wire.sym} 1150 -1350 0 0 {name=p8 sig_type=std_logic lab=v_t}
-C {devices/lab_wire.sym} 1550 -1350 0 0 {name=p9 sig_type=std_logic lab=v_td}
+C {devices/lab_wire.sym} 750 -1350 0 0 {name=p7 sig_type=std_logic lab=v_dx}
+C {devices/lab_wire.sym} 1150 -1350 0 0 {name=p8 sig_type=std_logic lab=v_th}
+C {devices/lab_wire.sym} 1550 -1350 0 0 {name=p9 sig_type=std_logic lab=v_dth}
 C {devices/lab_wire.sym} 2200 -1770 0 1 {name=p41 sig_type=std_logic lab=vo_1}
 C {devices/lab_wire.sym} 2200 -1580 0 1 {name=p42 sig_type=std_logic lab=vo_2}
 C {devices/lab_wire.sym} 2040 -1770 0 0 {name=p47 sig_type=std_logic lab=vin_1}

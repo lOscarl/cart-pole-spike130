@@ -5,9 +5,9 @@ V5 vtrh GND 0.6
 V6 vref GND 1
 V7 vss GND 0
 x1 vdd vss spk_x v_x vtrh vref v_rew1 neuron_xin_v1
-x2 vdd vss spk_dx v_xd vtrh vref v_rew1 neuron_xin_v1
-x3 vdd vss spk_th v_t vtrh vref v_rew1 neuron_xin_v1
-x4 vdd vss spk_dth v_td vtrh vref v_rew1 neuron_xin_v1
+x2 vdd vss spk_dx v_dx vtrh vref v_rew1 neuron_xin_v1
+x3 vdd vss spk_th v_th vtrh vref v_rew1 neuron_xin_v1
+x4 vdd vss spk_dth v_dth vtrh vref v_rew1 neuron_xin_v1
 x5 net9 net10 vo_1 vin_1 vtrh vref v_rew2 neuron_xin_v1
 x6 net11 net12 vo_2 vin_2 vtrh vref v_rew2 neuron_xin_v1
 X13 net3 spk_dx rram_cell gap_i=0.7
@@ -29,10 +29,10 @@ x20 vdd x1.phi_fire x5.phi_fire net8 vin_1 synpCntrl
 **** begin user architecture code
 
 
-Ix 0 v_x -0.004475521855056286
-Ix 0 v_x -0.004475521855056286
-It 0 v_t 0.03648954629898071
-It 0 v_t 0.03648954629898071
+Ix 0 v_x 7.5153835e-08
+Idx 0 v_dx 7.498457e-08
+Ith 0 v_th 7.7224804e-08
+Idth 0 v_dth 7.5007925e-08
 Vr1 v_rew1 0 1.8
 Vr2 v_rew2 0 1.8
 .control

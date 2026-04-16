@@ -4,114 +4,69 @@ import random
 import gymnasium as gym
 
 # -----------------------------
-# CONFIGURACIÓN
+# CONFIGURATION
 # -----------------------------
-spice_file = "cp_net3.spice"        # archivo SPICE a editar
-line_to_find1 = "Ix"          # parte de la línea que queremos reemplazar
-line_to_find2 = "Ixd"          # parte de la línea que queremos reemplazar
-line_to_find3 = "It"          # parte de la línea que queremos reemplazar
-line_to_find4 = "Itd"          # parte de la línea que queremos reemplazar
-
-#xmems = ['x7', 'x9', 'x11', 'x13', 'x15', 'x17', 'x19', 'x21']
-
-xmem1 = "x7 net2 spk_x"
-xmem2 = "x9 net1 spk_x"
-xmem3 = "x11 net4 spk_dx"
-xmem4 = "x13 net3 spk_dx"
-xmem5 = "x15 net6 spk_th"
-xmem6 = "x17 net5 spk_th"
-xmem7 = "x19 net8 spk_dth"
-xmem8 = "x21 net7 spk_dth"
+spice_file = "cp_net3.spice"        # SPICE file to edit
 
 
-"""
-new_value1 = "0.25u"                      # nuevo voltaje que queremos escribir
-new_value2 = "0.4u"                      # nuevo voltaje que queremos escribir
-new_value3 = "0.8u"                      # nuevo voltaje que queremos escribir
-new_value4 = "1u"                      # nuevo voltaje que queremos escribir
-"""
+spice_sources = ["Ix", "Idx", "Ith", "Idth"] # source names
+#xmems = ["x7 net2 spk_x", "x9 net1 spk_x", "x11 net4 spk_dx", "x13 net3 spk_dx",
+#         "x15 net6 spk_th", "x17 net5 spk_th", "x19 net8 spk_dth", "x21 net7 spk_dth" ] # rram identifiers
+xmems = ["spk_x", "spk_dx", "spk_th", "spk_dth"] # rram identifiers
 
 
 # -----------------------------
-# 1. LEER Y MODIFICAR EL ARCHIVO
+# SPICE MODIFY FUNTION
 # -----------------------------
 
-def ejecucion_spice(fuentes, resitencias):
+def ejecucion_spice(source_value, gap_value):
 
-    new_value1 = fuentes[0]
-    new_value2 = fuentes[1]
-    new_value3 = fuentes[2]
-    new_value4 = fuentes[3]
-
-    new_value_m1 = resitencias[0]
-    new_value_m2 = resitencias[1]
-    new_value_m3 = resitencias[2]
-    new_value_m4 = resitencias[3]
-    new_value_m5 = resitencias[4]
-    new_value_m6 = resitencias[5]
-    new_value_m7 = resitencias[6]
-    new_value_m8 = resitencias[7]
-
+    # Open NETLIST 
     start_time = time.time()
     with open(spice_file, "r") as f:
         lines = f.readlines()
 
+    # Create a new empty netlist
     new_lines = []
+    count = 1
+    # Split netlist in lines
     for line in lines:
-        if line_to_find1 in line:
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"Ix 0 v_x {new_value1}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-            new_lines.append(new_line)
-        elif line_to_find2 in line:
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"Ixd 0 v_xd {new_value2}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-            new_lines.append(new_line)
-        elif line_to_find3 in line:
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"It 0 v_t {new_value3}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-            new_lines.append(new_line)
-        elif line_to_find4 in line:
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"Itd 0 v_td {new_value4}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-            new_lines.append(new_line)
-        elif xmem1 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X7 net2 spk_x rram_cell gap_i={new_value_m1}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-        elif xmem2 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X9 net1 spk_x rram_cell gap_i={new_value_m2}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-        elif xmem3 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X11 net4 spk_dx rram_cell gap_i={new_value_m3}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-        elif xmem4 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X13 net3 spk_dx rram_cell gap_i={new_value_m4}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-        elif xmem5 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X15 net6 spk_th rram_cell gap_i={new_value_m5}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-        elif xmem6 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X17 net5 spk_th rram_cell gap_i={new_value_m6}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-        elif xmem7 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X19 net8 spk_dth rram_cell gap_i={new_value_m7}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
-        elif xmem8 in line: 
-            # Reemplazamos la línea completa por una nueva
-            new_line = f"X21 net7 spk_dth rram_cell gap_i={new_value_m8}\n"
-            print(f"Reemplazando línea: {line.strip()}  -->  {new_line.strip()}")
+        # Verify if all necesary lines have been replaced
+        if count <12:
+            # Replace sources-val & rram-gap in netlist
+
+            # Verify if the line contains a source
+            if any(p in line for p in spice_sources):
+                # Check with source is an its index to modify the value
+                source = [p for p in spice_sources if p in line]
+                i = spice_sources.index(source[0])
+                words = line.split()
+                words[3] = str(source_value[i]) #modify only the value
+                new_line = " ".join(words) + "\n"
+                new_lines.append(new_line)
+                print(f"Replacing: {line.strip()}  -->  {new_line.strip()}")
+                count += 1
+    
+            # Verify if the line contains a rram
+            elif "rram_cell" in line:
+                
+                print("coincidio")
+                rram = [p for p in xmems if p in line]
+                print(rram)
+                i = spice_sources.index(rram[0])
+                words = line.split()
+                words[4] = "gap_i=" + str(gap_value[i]) #modify only the value
+                new_line = " ".join(words) + "\n"
+                new_lines.append(new_line)
+                print(f"Replacing: {line.strip()}  -->  {new_line.strip()}")
+                count += 1
+            else:
+                new_lines.append(line)
         else:
             new_lines.append(line)
+
+
+    
 
 
     # Guardar archivo modificado
@@ -144,7 +99,7 @@ def ejecucion_spice(fuentes, resitencias):
 
 
 # -----------------------------
-# 2. EJECUTAR GYMNASIUM
+# 2. FUNCION DE ACCION
 # -----------------------------
 def action():
 
@@ -155,8 +110,30 @@ def action():
     a = sum(vo1)/len(vo1)
     a = sum(vo2)/len(vo2)
 
+
 # -----------------------------
-# 2. EJECUTAR GYMNASIUM
+# 3. FUNCIONES DE MAPEO A FUENTES IDEALES
+# -----------------------------
+def funcion_de_mapeo(val,x,y,a,b):
+    sal = a + (val-x)*(b-a)/(y-x)
+    return sal
+
+def mapeo_de_fuentes(estados):
+    salida = [0,0,0,0]
+    fuentelim = [50e-9, 100e-9]
+    xlim = [-4.8, 4.8]
+    salida[0] = funcion_de_mapeo(estados[0], *xlim, *fuentelim)
+    dxlim = [-10,10]
+    salida[1] = funcion_de_mapeo(estados[1], *dxlim, *fuentelim)
+    thlim = [-0.418,0.418]
+    salida[2] = funcion_de_mapeo(estados[2], *thlim, *fuentelim)
+    dthlim = [-10,10]
+    salida[3] = funcion_de_mapeo(estados[3], *dthlim, *fuentelim)
+    return salida
+
+
+# -----------------------------
+# 4. EJECUTAR GYMNASIUM
 # -----------------------------
 
 # Crear entorno
@@ -187,7 +164,10 @@ for episodio in range(5):
         
         """
         resistencias = [0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
-        resultado = ejecucion_spice(estado, resistencias)
+
+        fuentes = mapeo_de_fuentes(estado)
+
+        resultado = ejecucion_spice(fuentes, resistencias)
         accion = action(resultado)
          
         estado, reward, terminado, info = env.step(accion)
